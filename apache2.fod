@@ -1,0 +1,21 @@
+<VirtualHost *:80>
+    ServerName fod.example.org
+    DocumentRoot /var/www
+    ErrorLog /var/log/apache2/fod_error.log
+    LogLevel debug
+    CustomLog /var/log/apache2/fod_access.log combined
+    #RewriteEngine On
+    #RewriteRule ^/(.*) https://fod.example.com/$1 [L,R]
+    Alias                   /static         /srv/flowspy/static
+
+    AddDefaultCharset   UTF-8
+    IndexOptions        +Charset=UTF-8
+
+    SSLProxyEngine        off
+    ProxyErrorOverride    off
+    ProxyTimeout    28800
+    ProxyPass       /static !
+    ProxyPass        / http://localhost:8080/ retry=0
+    ProxyPassReverse / http://localhost:8080/
+
+</VirtualHost>

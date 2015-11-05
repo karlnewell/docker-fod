@@ -31,21 +31,26 @@ RUN cd /srv && \
     git clone https://github.com/grnet/flowspy.git && \
     cd flowspy/flowspy && \
     cp urls.py.dist urls.py
-RUN pip install -r /srv/flowspy/requirements.txt
-RUN pip install mysql-python smartencoding
+RUN pip install -r /srv/flowspy/requirements.txt && \
+    pip install mysql-python 
 RUN sed -i 's/from django.forms.util import smart_unicode/from django.utils.encoding import smart_unicode/' /usr/local/lib/python2.7/dist-packages/tinymce/widgets.py
 RUN sed -i 's/#START/START/' /etc/default/beanstalkd 
 RUN mkdir /var/log/fod && chown www-data:www-data /var/log/fod
+
 COPY gunicorn.fod /etc/gunicorn.d/fod
 COPY default.celeryd /etc/default/celeryd
 COPY apache2.fod /etc/apache2/sites-available/fod
 COPY flowspy.settings.py /srv/flowspy/flowspy/settings.py
+
 RUN a2enmod rewrite && \
     a2enmod proxy && \
     a2enmod ssl && \
     a2enmod proxy_http && \
     a2dissite default && \
     a2ensite fod
+
+COPY docker-entrypoint.sh /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 EXPOSE 80
 CMD ["/bin/bash"]
-

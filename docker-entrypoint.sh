@@ -2,7 +2,7 @@
 set -e
 
 service mysql start
-/usr/bin/mysql -e 'CREATE DATABASE fod'
+/usr/bin/mysql -e 'CREATE DATABASE IF NOT EXISTS fod'
 
 service memcached start
 service beanstalkd start

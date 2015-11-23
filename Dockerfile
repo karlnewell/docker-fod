@@ -33,6 +33,10 @@ RUN cd /srv && \
     cp urls.py.dist urls.py
 RUN pip install -r /srv/flowspy/requirements.txt && \
     pip install mysql-python 
+RUN cd /srv && \
+    git clone https://github.com/grnet/flowspy-graphs.git && \
+    cd flowspy-graphs && \
+    python setup.py.install
 RUN sed -i 's/from django.forms.util import smart_unicode/from django.utils.encoding import smart_unicode/' /usr/local/lib/python2.7/dist-packages/tinymce/widgets.py
 RUN sed -i 's/#START/START/' /etc/default/beanstalkd 
 RUN mkdir /var/log/fod && chown www-data:www-data /var/log/fod

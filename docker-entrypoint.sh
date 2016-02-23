@@ -7,7 +7,7 @@ service mysql start
 service memcached start
 service beanstalkd start
 service gunicorn start
+service shib2 start
 service apache2 start
 
 exec "$@"
-

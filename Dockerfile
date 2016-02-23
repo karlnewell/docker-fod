@@ -7,6 +7,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
  git \
  gunicorn \
  libapache2-mod-proxy-html \
+ libapache2-mod-shib2 \
  libevent-dev \
  libmysqlclient-dev \
  libxml2-dev \
@@ -32,13 +33,13 @@ RUN cd /srv && \
     cd flowspy/flowspy && \
     cp urls.py.dist urls.py
 RUN pip install -r /srv/flowspy/requirements.txt && \
-    pip install mysql-python 
+    pip install mysql-python
 RUN cd /srv && \
     git clone https://github.com/grnet/flowspy-graphs.git && \
     cd flowspy-graphs && \
     python setup.py install
 RUN sed -i 's/from django.forms.util import smart_unicode/from django.utils.encoding import smart_unicode/' /usr/local/lib/python2.7/dist-packages/tinymce/widgets.py
-RUN sed -i 's/#START/START/' /etc/default/beanstalkd 
+RUN sed -i 's/#START/START/' /etc/default/beanstalkd
 RUN mkdir /var/log/fod && chown www-data:www-data /var/log/fod
 
 COPY gunicorn.fod /etc/gunicorn.d/fod
@@ -50,6 +51,7 @@ RUN a2enmod rewrite && \
     a2enmod proxy && \
     a2enmod ssl && \
     a2enmod proxy_http && \
+    a2enmod shib2 && \
     a2dissite default && \
     a2ensite fod
 

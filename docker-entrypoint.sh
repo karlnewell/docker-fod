@@ -7,9 +7,12 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then #check whether the DB is initialized.
     echo 'Database initialized'
     
     service mysql start
-    /usr/bin/mysql -e 'CREATE DATABASE IF NOT EXISTS fod'
 else
     service mysql start
+fi
+
+if [ ! -d "/var/lib/mysql/fod" ]; then #check whether the fod DB is initialized.
+  /usr/bin/mysql -e 'CREATE DATABASE IF NOT EXISTS fod'
 fi
 
 service memcached start

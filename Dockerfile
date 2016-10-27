@@ -22,7 +22,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
  vim \
  && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/leopoul/ncclient.git && \
+RUN git clone https://github.com/ncclient/ncclient.git && \
     cd ncclient && \
     python setup.py install
 RUN git clone https://github.com/karlnewell/nxpy.git && \

@@ -20,5 +20,7 @@ service beanstalkd start
 service gunicorn start
 service shibd start
 service apache2 start
+service celeryd start
+service exim4 start
 
 exec "$@"

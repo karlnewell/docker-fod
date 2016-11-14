@@ -13,6 +13,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
  libmysqlclient-dev \
  libxml2-dev \
  libxslt-dev \
+ libxslt1-dev \
  memcached \
  mysql-client \
  mysql-server \
@@ -21,7 +22,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
  python-django \
  python-django-celery \
  python-django-registration \
- python-django-south \
  python-django-tinymce \
  python-gevent \
  python-ipaddr \
@@ -35,9 +35,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
  vim \
  && rm -rf /var/lib/apt/lists/*
 
-RUN git clone https://github.com/ncclient/ncclient.git && \
-    cd ncclient && \
-    python setup.py install
+RUN pip install ncclient djangorestframework==2.4.8 South
 RUN git clone https://github.com/karlnewell/nxpy.git && \
     cd nxpy && \
     python setup.py install
@@ -45,7 +43,6 @@ RUN cd /srv && \
     git clone https://github.com/grnet/flowspy.git && \
     cd flowspy/flowspy && \
     cp urls.py.dist urls.py
-RUN pip install djangorestframework==2.4.8
 RUN cd /srv && \
     git clone https://github.com/grnet/flowspy-graphs.git && \
     cd flowspy-graphs && \
